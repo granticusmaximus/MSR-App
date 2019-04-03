@@ -1,0 +1,44 @@
+@model WebApp.Models.Analyst
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="jumbotron">
+    <h1>@Html.DisplayNameFor(model => model.BAFullname)'s Details</h1>
+</div>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BAFName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BAFName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BALName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BALName)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.BAID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

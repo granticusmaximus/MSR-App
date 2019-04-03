@@ -1,0 +1,61 @@
+@model IEnumerable<WebApp.Models.MSRTask>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="jumbotron">
+    <h1>MSR Task List</h1>
+    <p>
+        <a class="btn btn-primary btn-lg" asp-action="Create">Add New Task</a>
+    </p>
+</div>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MSRtitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateAdded)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MSRNote)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MSRtitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateAdded)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MSRNote)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.MsrID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.MsrID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.MsrID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,46 @@
+@model WebApp.Models.AppList
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<div class="jumbotron">
+    <h1>Are you sure you want to delete @Html.DisplayNameFor(model => model.AppName)</h1>
+</div>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AppName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AppName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AppNotes)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AppNotes)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Analyst)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Analyst.BAID)
+        </dd class>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Developer)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Developer.DevID)
+        </dd class>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="AppID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

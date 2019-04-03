@@ -1,0 +1,55 @@
+@model IEnumerable<WebApp.Models.AppList>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="jumbotron">
+    <h1>Application List</h1>
+    <p>
+        <a class="btn btn-primary btn-lg" asp-action="Create">Add New Application</a>
+    </p>
+</div>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AppName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Analyst)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Developer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppNotes)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Analyst.BAFullname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Developer.DevFullname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppNotes)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.AppID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.AppID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.AppID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
