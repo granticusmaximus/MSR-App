@@ -12,9 +12,17 @@ namespace WebApp.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int MsrID { get; set; }
 
-        public string Employee { get; set; }
+        [ForeignKey("Employee")]
+        [DisplayName("Employee Assigned:")]
+        public int AssignedEmpID { get; set; }
+        public Employee Employee { get; set; }
 
-        public string AppTitle { get; set; }
+        [ForeignKey("AppList")]
+        [DisplayName("App Assigned:")]
+        public int AssignedAppID { get; set; }
+        public AppList Apps { get; set; }
+        //public string Employee { get; set; }
+        //public string AppTitle { get; set; }
 
         [DisplayName("Task Number/MSR Title:")]
         public string MSRtitle { get; set; }
@@ -26,7 +34,6 @@ namespace WebApp.Models
 
         [DisplayName("Notes:")]
         public string MSRNote { get; set; }
-
 
     }
 }

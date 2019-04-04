@@ -10,8 +10,8 @@ using WebApp;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(MSRDbContext))]
-    [Migration("20190403015545_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20190403230852_MSRTableUpdate4")]
+    partial class MSRTableUpdate4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,6 +54,12 @@ namespace WebApp.Migrations
 
                     b.Property<int>("AssignedDev");
 
+                    b.Property<string>("POC");
+
+                    b.Property<string>("POCEmail");
+
+                    b.Property<string>("Telephone");
+
                     b.HasKey("AppID");
 
                     b.HasIndex("AssignedBA");
@@ -82,21 +88,21 @@ namespace WebApp.Migrations
                     b.ToTable("Developers");
                 });
 
-            modelBuilder.Entity("WebApp.Models.EmployeeVM", b =>
+            modelBuilder.Entity("WebApp.Models.Employee", b =>
                 {
                     b.Property<int>("EmpID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AssignedBA");
+                    b.Property<string>("Email");
 
-                    b.Property<int>("AssignedDev");
+                    b.Property<string>("FName");
+
+                    b.Property<string>("LName");
+
+                    b.Property<string>("Phone");
 
                     b.HasKey("EmpID");
-
-                    b.HasIndex("AssignedBA");
-
-                    b.HasIndex("AssignedDev");
 
                     b.ToTable("Employees");
                 });
@@ -107,17 +113,23 @@ namespace WebApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AppTitle");
+                    b.Property<int?>("AppsAppID");
+
+                    b.Property<int>("AssignedAppID");
+
+                    b.Property<int>("AssignedEmpID");
 
                     b.Property<DateTime>("DateAdded");
-
-                    b.Property<string>("Employee");
 
                     b.Property<string>("MSRNote");
 
                     b.Property<string>("MSRtitle");
 
                     b.HasKey("MsrID");
+
+                    b.HasIndex("AppsAppID");
+
+                    b.HasIndex("AssignedEmpID");
 
                     b.ToTable("Tasks");
                 });
@@ -135,16 +147,15 @@ namespace WebApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("WebApp.Models.EmployeeVM", b =>
+            modelBuilder.Entity("WebApp.Models.MSRTask", b =>
                 {
-                    b.HasOne("WebApp.Models.Analyst", "Analyst")
+                    b.HasOne("WebApp.Models.AppList", "Apps")
                         .WithMany()
-                        .HasForeignKey("AssignedBA")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("AppsAppID");
 
-                    b.HasOne("WebApp.Models.Developer", "Developer")
+                    b.HasOne("WebApp.Models.Employee", "Employee")
                         .WithMany()
-                        .HasForeignKey("AssignedDev")
+                        .HasForeignKey("AssignedEmpID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

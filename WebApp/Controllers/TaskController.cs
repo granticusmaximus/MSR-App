@@ -22,7 +22,9 @@ namespace WebApp.Controllers
         // GET: Task
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Tasks.ToListAsync());
+            var mSRDbContext = _context.Tasks.Include(a => a.Employee).Include(a => a.Apps);
+            return View(await mSRDbContext.ToListAsync());
+            //return View(await _context.Tasks.ToListAsync());
         }
 
         // GET: Task/Details/5
@@ -34,6 +36,8 @@ namespace WebApp.Controllers
             }
 
             var mSRTask = await _context.Tasks
+                .Include(a => a.Employee)
+                .Include(a => a.Apps)
                 .FirstOrDefaultAsync(m => m.MsrID == id);
             if (mSRTask == null)
             {
@@ -46,6 +50,8 @@ namespace WebApp.Controllers
         // GET: Task/Create
         public IActionResult Create()
         {
+            ViewData["AssignedEmp"] = new SelectList(_context.Employees, "EmpID", "Fullname");
+            ViewData["AssignedApp"] = new SelectList(_context.Apps, "AppID", "AppName");
             return View();
         }
 
@@ -54,7 +60,7 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MsrID,Employee,AppTitle,MSRtitle,DateAdded,MSRNote")] MSRTask mSRTask)
+        public async Task<IActionResult> Create([Bind("MsrID,AppTitle,MSRtitle,DateAdded,MSRNote,AssignedEmpID,AssignedAppID")] MSRTask mSRTask)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +68,8 @@ namespace WebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AssignedEmp"] = new SelectList(_context.Employees, "EmpID", "Fullname", mSRTask.AssignedEmpID);
+            ViewData["AssignedApp"] = new SelectList(_context.Apps, "AppID", "AppName", mSRTask.AssignedAppID);
             return View(mSRTask);
         }
 
@@ -78,6 +86,8 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
+            ViewData["AssignedEmp"] = new SelectList(_context.Employees, "EmpID", "Fullname", mSRTask.AssignedEmpID);
+            ViewData["AssignedApp"] = new SelectList(_context.Apps, "AppID", "AppName", mSRTask.AssignedAppID);
             return View(mSRTask);
         }
 
@@ -86,7 +96,7 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MsrID,Employee,AppTitle,MSRtitle,DateAdded,MSRNote")] MSRTask mSRTask)
+        public async Task<IActionResult> Edit(int id, [Bind("MsrID,AppTitle,MSRtitle,DateAdded,MSRNote,AssignedEmpID,AssignedAppID")] MSRTask mSRTask)
         {
             if (id != mSRTask.MsrID)
             {
@@ -113,6 +123,8 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AssignedEmp"] = new SelectList(_context.Analysts, "EmpID", "Fullname", mSRTask.AssignedEmpID);
+            ViewData["AssignedApp"] = new SelectList(_context.Apps, "AppID", "AppName", mSRTask.AssignedAppID);
             return View(mSRTask);
         }
 

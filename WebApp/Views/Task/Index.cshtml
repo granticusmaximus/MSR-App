@@ -14,10 +14,10 @@
     <thead class="thead-dark">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Employee)
+                @Html.DisplayNameFor(model => model.AssignedEmpID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AppTitle)
+                @Html.DisplayNameFor(model => model.AssignedAppID)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.MSRtitle)
@@ -36,10 +36,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Employee)
+                    @Html.DisplayFor(modelItem => item.Employee.Fullname)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AppTitle)
+                    @Html.DisplayFor(modelItem => item.Apps.AppName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.MSRtitle)

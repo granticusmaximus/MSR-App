@@ -12,8 +12,6 @@ namespace WebApp.Models
         public int AppID { get; set; }
         [DisplayName("Application Name:")]
         public string AppName { get; set; }
-        [DisplayName("Purpose:")]
-        public string AppNotes { get; set; }
 
         [ForeignKey("Analyst")]
         [DisplayName("BA Assigned:")]
@@ -24,5 +22,18 @@ namespace WebApp.Models
         [DisplayName("Dev Assigned:")]
         public int AssignedDev { get; set; }
         public Developer Developer { get; set; }
+
+        [DisplayName("Purpose:")]
+        public string AppNotes { get; set; }
+
+        [DisplayName("POC/Owner:")]
+        public string POC { get; set; }
+
+        [DisplayName("POC #:")]
+        public string Telephone { get; set; }
+
+        [DisplayName("POC Email:")]
+        public string POCEmail { get; set; }
+
     }
 }

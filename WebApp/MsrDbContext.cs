@@ -14,6 +14,6 @@ namespace WebApp
         public DbSet<Analyst> Analysts { get; set; }
         public DbSet<AppList> Apps { get; set; }
         public DbSet<MSRTask> Tasks { get; set; }
-        public DbSet<EmployeeVM> Employees { get; set; }
+        public DbSet<Employee> Employees { get; set; }
     }
 }

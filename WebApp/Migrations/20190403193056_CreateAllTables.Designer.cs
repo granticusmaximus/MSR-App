@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApp;
 
 namespace WebApp.Migrations
 {
     [DbContext(typeof(MSRDbContext))]
-    partial class MSRDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190403193056_CreateAllTables")]
+    partial class CreateAllTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,9 +115,9 @@ namespace WebApp.Migrations
 
                     b.Property<int?>("AppsAppID");
 
-                    b.Property<int>("AssignedAppID");
+                    b.Property<int>("AssignedApp");
 
-                    b.Property<int>("AssignedEmpID");
+                    b.Property<int>("AssignedEmp");
 
                     b.Property<DateTime>("DateAdded");
 
@@ -127,7 +129,7 @@ namespace WebApp.Migrations
 
                     b.HasIndex("AppsAppID");
 
-                    b.HasIndex("AssignedEmpID");
+                    b.HasIndex("AssignedEmp");
 
                     b.ToTable("Tasks");
                 });
@@ -153,7 +155,7 @@ namespace WebApp.Migrations
 
                     b.HasOne("WebApp.Models.Employee", "Employee")
                         .WithMany()
-                        .HasForeignKey("AssignedEmpID")
+                        .HasForeignKey("AssignedEmp")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

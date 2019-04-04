@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApp;
 
 namespace WebApp.Migrations
 {
     [DbContext(typeof(MSRDbContext))]
-    partial class MSRDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190403225457_MSRTableUpdate2")]
+    partial class MSRTableUpdate2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,13 +113,11 @@ namespace WebApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AppsAppID");
-
-                    b.Property<int>("AssignedAppID");
-
-                    b.Property<int>("AssignedEmpID");
+                    b.Property<int>("AppID");
 
                     b.Property<DateTime>("DateAdded");
+
+                    b.Property<int>("EmpID");
 
                     b.Property<string>("MSRNote");
 
@@ -125,9 +125,9 @@ namespace WebApp.Migrations
 
                     b.HasKey("MsrID");
 
-                    b.HasIndex("AppsAppID");
+                    b.HasIndex("AppID");
 
-                    b.HasIndex("AssignedEmpID");
+                    b.HasIndex("EmpID");
 
                     b.ToTable("Tasks");
                 });
@@ -149,11 +149,12 @@ namespace WebApp.Migrations
                 {
                     b.HasOne("WebApp.Models.AppList", "Apps")
                         .WithMany()
-                        .HasForeignKey("AppsAppID");
+                        .HasForeignKey("AppID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebApp.Models.Employee", "Employee")
                         .WithMany()
-                        .HasForeignKey("AssignedEmpID")
+                        .HasForeignKey("EmpID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

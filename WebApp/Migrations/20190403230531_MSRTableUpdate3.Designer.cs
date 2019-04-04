@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApp;
 
 namespace WebApp.Migrations
 {
     [DbContext(typeof(MSRDbContext))]
-    partial class MSRDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190403230531_MSRTableUpdate3")]
+    partial class MSRTableUpdate3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,9 +117,9 @@ namespace WebApp.Migrations
 
                     b.Property<int>("AssignedAppID");
 
-                    b.Property<int>("AssignedEmpID");
-
                     b.Property<DateTime>("DateAdded");
+
+                    b.Property<int>("EmpID");
 
                     b.Property<string>("MSRNote");
 
@@ -127,7 +129,7 @@ namespace WebApp.Migrations
 
                     b.HasIndex("AppsAppID");
 
-                    b.HasIndex("AssignedEmpID");
+                    b.HasIndex("EmpID");
 
                     b.ToTable("Tasks");
                 });
@@ -153,7 +155,7 @@ namespace WebApp.Migrations
 
                     b.HasOne("WebApp.Models.Employee", "Employee")
                         .WithMany()
-                        .HasForeignKey("AssignedEmpID")
+                        .HasForeignKey("EmpID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebApp.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class CreateAllTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,20 +41,19 @@ namespace WebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tasks",
+                name: "Employees",
                 columns: table => new
                 {
-                    MsrID = table.Column<int>(nullable: false)
+                    EmpID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Employee = table.Column<string>(nullable: true),
-                    AppTitle = table.Column<string>(nullable: true),
-                    MSRtitle = table.Column<string>(nullable: true),
-                    DateAdded = table.Column<DateTime>(nullable: false),
-                    MSRNote = table.Column<string>(nullable: true)
+                    FName = table.Column<string>(nullable: true),
+                    LName = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Phone = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tasks", x => x.MsrID);
+                    table.PrimaryKey("PK_Employees", x => x.EmpID);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,9 +63,12 @@ namespace WebApp.Migrations
                     AppID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AppName = table.Column<string>(nullable: true),
-                    AppNotes = table.Column<string>(nullable: true),
                     AssignedBA = table.Column<int>(nullable: false),
-                    AssignedDev = table.Column<int>(nullable: false)
+                    AssignedDev = table.Column<int>(nullable: false),
+                    AppNotes = table.Column<string>(nullable: true),
+                    POC = table.Column<string>(nullable: true),
+                    Telephone = table.Column<string>(nullable: true),
+                    POCEmail = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -86,28 +88,32 @@ namespace WebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employees",
+                name: "Tasks",
                 columns: table => new
                 {
-                    EmpID = table.Column<int>(nullable: false)
+                    MsrID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AssignedBA = table.Column<int>(nullable: false),
-                    AssignedDev = table.Column<int>(nullable: false)
+                    AssignedEmp = table.Column<int>(nullable: false),
+                    AssignedApp = table.Column<int>(nullable: false),
+                    AppsAppID = table.Column<int>(nullable: true),
+                    MSRtitle = table.Column<string>(nullable: true),
+                    DateAdded = table.Column<DateTime>(nullable: false),
+                    MSRNote = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employees", x => x.EmpID);
+                    table.PrimaryKey("PK_Tasks", x => x.MsrID);
                     table.ForeignKey(
-                        name: "FK_Employees_Analysts_AssignedBA",
-                        column: x => x.AssignedBA,
-                        principalTable: "Analysts",
-                        principalColumn: "BAID",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_Tasks_Apps_AppsAppID",
+                        column: x => x.AppsAppID,
+                        principalTable: "Apps",
+                        principalColumn: "AppID",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Employees_Developers_AssignedDev",
-                        column: x => x.AssignedDev,
-                        principalTable: "Developers",
-                        principalColumn: "DevID",
+                        name: "FK_Tasks_Employees_AssignedEmp",
+                        column: x => x.AssignedEmp,
+                        principalTable: "Employees",
+                        principalColumn: "EmpID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -122,26 +128,26 @@ namespace WebApp.Migrations
                 column: "AssignedDev");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_AssignedBA",
-                table: "Employees",
-                column: "AssignedBA");
+                name: "IX_Tasks_AppsAppID",
+                table: "Tasks",
+                column: "AppsAppID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_AssignedDev",
-                table: "Employees",
-                column: "AssignedDev");
+                name: "IX_Tasks_AssignedEmp",
+                table: "Tasks",
+                column: "AssignedEmp");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Tasks");
+
+            migrationBuilder.DropTable(
                 name: "Apps");
 
             migrationBuilder.DropTable(
                 name: "Employees");
-
-            migrationBuilder.DropTable(
-                name: "Tasks");
 
             migrationBuilder.DropTable(
                 name: "Analysts");

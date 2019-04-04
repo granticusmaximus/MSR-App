@@ -10,23 +10,22 @@ using WebApp.Models;
 
 namespace WebApp.Controllers
 {
-    public class AppsController : Controller
+    public class EmployeesController : Controller
     {
         private readonly MSRDbContext _context;
 
-        public AppsController(MSRDbContext context)
+        public EmployeesController(MSRDbContext context)
         {
             _context = context;
         }
 
-        // GET: Apps
+        // GET: Employees
         public async Task<IActionResult> Index()
         {
-            var mSRDbContext = _context.Apps.Include(a => a.Analyst).Include(a => a.Developer);
-            return View(await mSRDbContext.ToListAsync());
+            return View(await _context.Employees.ToListAsync());
         }
 
-        // GET: Apps/Details/5
+        // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,45 +33,39 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var appList = await _context.Apps
-                .Include(a => a.Analyst)
-                .Include(a => a.Developer)
-                .FirstOrDefaultAsync(m => m.AppID == id);
-            if (appList == null)
+            var employee = await _context.Employees
+                .FirstOrDefaultAsync(m => m.EmpID == id);
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(appList);
+            return View(employee);
         }
 
-        // GET: Apps/Create
+        // GET: Employees/Create
         public IActionResult Create()
         {
-            ViewData["AssignedBA"] = new SelectList(_context.Analysts, "BAID", "BAFullname");
-            ViewData["AssignedDev"] = new SelectList(_context.Developers, "DevID", "DevFullname");
             return View();
         }
 
-        // POST: Apps/Create
+        // POST: Employees/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AppID,AppName,AppNotes,POC,POCEmail,Telephone,AssignedBA,AssignedDev")] AppList appList)
+        public async Task<IActionResult> Create([Bind("EmpID,FName,LName,Email,Phone")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(appList);
+                _context.Add(employee);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AssignedBA"] = new SelectList(_context.Analysts, "BAID", "BAFullname", appList.AssignedBA);
-            ViewData["AssignedDev"] = new SelectList(_context.Developers, "DevID", "DevFullname", appList.AssignedDev);
-            return View(appList);
+            return View(employee);
         }
 
-        // GET: Apps/Edit/5
+        // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,24 +73,22 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var appList = await _context.Apps.FindAsync(id);
-            if (appList == null)
+            var employee = await _context.Employees.FindAsync(id);
+            if (employee == null)
             {
                 return NotFound();
             }
-            ViewData["AssignedBA"] = new SelectList(_context.Analysts, "BAID", "BAFullname", appList.AssignedBA);
-            ViewData["AssignedDev"] = new SelectList(_context.Developers, "DevID", "DevFullname", appList.AssignedDev);
-            return View(appList);
+            return View(employee);
         }
 
-        // POST: Apps/Edit/5
+        // POST: Employees/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AppID,AppName,AppNotes,POC,POCEmail,Telephone,AssignedBA,AssignedDev")] AppList appList)
+        public async Task<IActionResult> Edit(int id, [Bind("EmpID,FName,LName,Email,Phone")] Employee employee)
         {
-            if (id != appList.AppID)
+            if (id != employee.EmpID)
             {
                 return NotFound();
             }
@@ -106,12 +97,12 @@ namespace WebApp.Controllers
             {
                 try
                 {
-                    _context.Update(appList);
+                    _context.Update(employee);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AppListExists(appList.AppID))
+                    if (!EmployeeExists(employee.EmpID))
                     {
                         return NotFound();
                     }
@@ -122,12 +113,10 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AssignedBA"] = new SelectList(_context.Analysts, "BAID", "BAFullname", appList.AssignedBA);
-            ViewData["AssignedDev"] = new SelectList(_context.Developers, "DevID", "DevFullname", appList.AssignedDev);
-            return View(appList);
+            return View(employee);
         }
 
-        // GET: Apps/Delete/5
+        // GET: Employees/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,32 +124,30 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var appList = await _context.Apps
-                .Include(a => a.Analyst)
-                .Include(a => a.Developer)
-                .FirstOrDefaultAsync(m => m.AppID == id);
-            if (appList == null)
+            var employee = await _context.Employees
+                .FirstOrDefaultAsync(m => m.EmpID == id);
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(appList);
+            return View(employee);
         }
 
-        // POST: Apps/Delete/5
+        // POST: Employees/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var appList = await _context.Apps.FindAsync(id);
-            _context.Apps.Remove(appList);
+            var employee = await _context.Employees.FindAsync(id);
+            _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AppListExists(int id)
+        private bool EmployeeExists(int id)
         {
-            return _context.Apps.Any(e => e.AppID == id);
+            return _context.Employees.Any(e => e.EmpID == id);
         }
     }
 }
